@@ -10,7 +10,7 @@ const account = process.env['ACCOUNT_ID']
 
 const stages = {
     dev: 'us-east-1',
-    prod: 'us-west-1'
+    // prod: 'us-west-1'
 }
 
 for (const [stage, region] of Object.entries(stages)) {
