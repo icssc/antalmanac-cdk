@@ -4,6 +4,7 @@ import { Distribution, OriginAccessIdentity, AllowedMethods, ViewerProtocolPolic
 import { S3Origin } from 'aws-cdk-lib/aws-cloudfront-origins'
 import { PolicyStatement, CanonicalUserPrincipal } from 'aws-cdk-lib/aws-iam'
 import * as lambda from 'aws-cdk-lib/aws-lambda'
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb'
 import * as s3 from 'aws-cdk-lib/aws-s3'
 import * as s3Deployment from 'aws-cdk-lib/aws-s3-deployment'
 import * as apigateway from 'aws-cdk-lib/aws-apigateway'
@@ -41,6 +42,11 @@ export default class BackendStack extends Stack {
             principals: [new CanonicalUserPrincipal(cloudfrontOAI.cloudFrontOriginAccessIdentityS3CanonicalUserId)]
           }));
 
+        const sessionStoreDB = new dynamodb.Table(this, `antalmanac-session-store-ddb-${props.stage}`, {
+            partitionKey: { name: 'sessionId', type: dynamodb.AttributeType.STRING},
+            timeToLiveAttribute: 'expires'
+        })
+
         const api = new lambda.Function(
             this,
             `antalmanac-api-${props.stage}-lambda`,
@@ -57,9 +63,12 @@ export default class BackendStack extends Stack {
                     GOOGLE_CLIENT: process.env.GOOGLE_CLIENT,
                     GOOGLE_SECRET: process.env.GOOGLE_SECRET,
                     SESSION_SECRET: process.env.SESSION_SECRET,
+                    SESSION_DDB_NAME: sessionStoreDB.tableName
                 },
             },
         )
+        
+        sessionStoreDB.grantFullAccess(api)
 
         const zone = route53.HostedZone.fromHostedZoneAttributes(
             this,
