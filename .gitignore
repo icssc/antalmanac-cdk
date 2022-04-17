@@ -2,6 +2,7 @@
 *.d.ts
 node_modules
 dist
+functions/AntAlmanac
 
 # CDK asset staging directory
 .cdk.staging

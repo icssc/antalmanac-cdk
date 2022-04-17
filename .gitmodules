@@ -1,6 +1,3 @@
 [submodule "functions/antalmanac-backend"]
 	path = functions/antalmanac-backend
 	url = https://github.com/icssc-projects/antalmanac-backend.git
-[submodule "functions/Antalmanac"]
-	path = functions/AntAlmanac
-	url = https://github.com/icssc/AntAlmanac.git

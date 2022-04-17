@@ -79,7 +79,7 @@ export default class BackendStack extends Stack {
             },
         )
 
-        const cert = acm.Certificate.fromCertificateArn(this,`api-gateway-cert-${props.stage}`,process.env.CERTIFICATE_ARN)
+        const cert = acm.Certificate.fromCertificateArn(this,`api-gateway-cert-${props.stage}`, process.env.CERTIFICATE_ARN)
         const apiGateway = new apigateway.LambdaRestApi(
             this,
             `antalmanac-api-gateway-${props.stage}`,
