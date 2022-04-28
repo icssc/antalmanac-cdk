@@ -5,17 +5,15 @@
     "build": "tsc && cdk synth --quiet",
     "build-client": "npm run build --prefix ./functions/AntAlmanac",
     "watch": "tsc -w",
-    "test": "jest",
     "cdk": "cdk",
     "lint": "eslint . --ext .ts",
     "backend-install": "npm install --prefix ./functions/antalmanac-backend"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.10",
     "@types/node": "10.17.27",
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",
-    "aws-cdk": "2.12.0",
+    "aws-cdk": "^2.12.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "prettier": "^2.5.1",
