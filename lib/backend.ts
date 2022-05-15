@@ -36,7 +36,7 @@ export default class BackendStack extends Stack {
                         props.stage === 'prod'
                             ? process.env.MONGODB_URI_PROD
                             : process.env.MONGODB_URI_DEV,
-                    CORS_ENABLED: (props.stage === 'prod').toString(),
+                    ISPROD: (props.stage === 'prod').toString(),
                     GOOGLE_CLIENT: process.env.GOOGLE_CLIENT,
                     GOOGLE_SECRET: process.env.GOOGLE_SECRET,
                     SESSION_SECRET: process.env.SESSION_SECRET,
