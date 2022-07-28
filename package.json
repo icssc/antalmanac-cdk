@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "build": "tsc && cdk synth",
-    "build-client": "npm run build --prefix ./functions/AntAlmanac",
+    "build-client": "export SKIP_PREFLIGHT_CHECK=true && npm run build --prefix ./functions/AntAlmanac",
     "watch": "tsc -w",
     "cdk": "cdk",
     "lint": "eslint . --ext .ts",

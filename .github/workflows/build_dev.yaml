@@ -38,6 +38,9 @@ jobs:
 
       - name: Install Packages
         run: npm install
+        
+      - name: Build AntAlmanac
+        run: npm install --prefix functions/AntAlmanac && npm run build-client
 
       - name: Synth stack
         run: npx cdk synth
@@ -76,6 +79,9 @@ jobs:
 
       - name: Install Packages
         run: npm install
+      
+      - name: Build AntAlmanac
+        run: npm install --prefix ./functions/antalmanac-backend && npm run build-client
 
       - name: Synth stack
         run: npx cdk synth
