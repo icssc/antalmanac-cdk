@@ -5,6 +5,7 @@ import * as apigateway from 'aws-cdk-lib/aws-apigateway'
 import * as route53 from 'aws-cdk-lib/aws-route53'
 import * as targets from 'aws-cdk-lib/aws-route53-targets'
 import * as acm from 'aws-cdk-lib/aws-certificatemanager'
+import * as dynamnodb from 'aws-cdk-lib/aws-dynamodb'
 
 interface BackendProps extends StackProps {
     stage: string
@@ -18,6 +19,10 @@ export default class BackendStack extends Stack {
     constructor(scope: Construct, id: string, props?: BackendProps) {
         super(scope, id, props)
 
+        const userDataDDB = new dynamnodb.Table(this, `antalmanac-userdata-ddb-${props.stage}`, {
+            partitionKey: { name: 'id', type: dynamnodb.AttributeType.STRING },
+            billingMode: dynamnodb.BillingMode.PAY_PER_REQUEST
+        })
 
         const api = new lambda.Function(
                 this,
@@ -27,11 +32,15 @@ export default class BackendStack extends Stack {
                     code: lambda.Code.fromAsset('functions/antalmanac-backend'),
                     handler: 'lambda.handler',
                     environment: {
-                        AA_MONGODB_URI: props.stage === 'prod' ? process.env.MONGODB_URI_PROD : process.env.MONGODB_URI_DEV,
-                        CORS_ENABLED: (props.stage === 'prod').toString(),
+                        // AA_MONGODB_URI: props.stage === 'prod' ? process.env.MONGODB_URI_PROD : process.env.MONGODB_URI_DEV,
+                        AA_MONGODB_URI: process.env.MONGODB_URI_PROD,
+                        STAGE: props.stage,
+                        USERDATA_TABLE_NAME: userDataDDB.tableName
                     },
                 },
             )
+
+        userDataDDB.grantReadWriteData(api)
 
         const zone = route53.HostedZone.fromHostedZoneAttributes(
             this,
