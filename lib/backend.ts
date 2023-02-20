@@ -40,6 +40,8 @@ export default class BackendStack extends Stack {
                 },
             )
 
+        userDataDDB.grantReadWriteData(api)
+
         const zone = route53.HostedZone.fromHostedZoneAttributes(
             this,
             `antalmanac-DNS-${props.stage}`,
